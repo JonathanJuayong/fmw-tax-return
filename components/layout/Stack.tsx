@@ -30,7 +30,7 @@ export const gapMap: { [key in SpacingOptions]: string } = {
 export default function Stack<T extends HTMLDivElement>(
   {
     asChild = false,
-    alignItems = "start",
+    alignItems = "stretch",
     gap = "sm",
     children,
     ...props
