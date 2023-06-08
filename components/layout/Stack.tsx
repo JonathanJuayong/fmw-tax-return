@@ -9,7 +9,7 @@ interface StackProps<T extends HTMLDivElement> extends HTMLAttributes<T> {
   asChild?: boolean
 }
 
-export const alignMap: { [key in AlignOptions]: string } = {
+const alignMap: { [key in AlignOptions]: string } = {
   start: "items-start",
   center: "items-center",
   end: "items-end",
@@ -17,7 +17,7 @@ export const alignMap: { [key in AlignOptions]: string } = {
   stretch: "items-stretch"
 }
 
-export const gapMap: { [key in SpacingOptions]: string } = {
+const gapMap: { [key in SpacingOptions]: string } = {
   xxs: "gap-3",
   xs: "gap-4",
   sm: "gap-5",

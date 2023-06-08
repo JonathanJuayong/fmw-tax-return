@@ -10,7 +10,7 @@ interface InlineProps<T extends HTMLDivElement> extends HTMLAttributes<T> {
   gap?: SpacingOptions
 }
 
-export const justifyMap: { [key in JustifyOptions]: string } = {
+const justifyMap: { [key in JustifyOptions]: string } = {
   start: "justify-start",
   center: "justify-center",
   end: "justify-end",
@@ -21,7 +21,7 @@ export const justifyMap: { [key in JustifyOptions]: string } = {
   normal: "justify-normal"
 }
 
-export const alignMap: { [key in AlignOptions]: string } = {
+const alignMap: { [key in AlignOptions]: string } = {
   start: "items-start",
   center: "items-center",
   end: "items-end",
@@ -29,7 +29,7 @@ export const alignMap: { [key in AlignOptions]: string } = {
   stretch: "items-stretch"
 }
 
-export const gapMap: { [key in SpacingOptions]: string } = {
+const gapMap: { [key in SpacingOptions]: string } = {
   xxs: "gap-3",
   xs: "gap-4",
   sm: "gap-5",
