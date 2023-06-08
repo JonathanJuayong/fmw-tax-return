@@ -16,7 +16,7 @@ export const personalInfoSchema = z.object({
   })
 })
 
-const bankInterestSchema = z.object({
+export const bankInterestSchema = z.object({
   bankName: z.string(),
   bsb: z.string(),
   accountNumber: z.string(),
@@ -24,7 +24,7 @@ const bankInterestSchema = z.object({
   isJointAccount: z.boolean()
 })
 
-const dividendsSchema = z.object({
+export const dividendsSchema = z.object({
   companyName: z.string(),
   srcOrHrn: z.string(),
   datePaid: z.string(),
@@ -33,7 +33,7 @@ const dividendsSchema = z.object({
   imputationCredit: z.string()
 })
 
-const rentalPropertySchema = z.object({
+export const rentalPropertySchema = z.object({
   address: z.string(),
   postcode: z.string(),
   cost: z.number(),
