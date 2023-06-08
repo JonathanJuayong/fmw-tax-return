@@ -20,7 +20,7 @@ export const bankInterestSchema = z.object({
   bankName: z.string(),
   bsb: z.string(),
   accountNumber: z.string(),
-  interestAmount: z.number(),
+  interestAmount: z.coerce.number(),
   isJointAccount: z.boolean()
 })
 
