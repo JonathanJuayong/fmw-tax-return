@@ -26,11 +26,11 @@ export const bankInterestSchema = z.object({
 
 export const dividendsSchema = z.object({
   companyName: z.string(),
-  srcOrHrn: z.string(),
+  srnOrHin: z.string(),
   datePaid: z.string(),
-  unfrankedAmount: z.number(),
-  frankedAmount: z.number(),
-  imputationCredit: z.string()
+  unfrankedAmount: z.coerce.number(),
+  frankedAmount: z.coerce.number(),
+  imputationCredit: z.coerce.number()
 })
 
 export const rentalPropertySchema = z.object({
