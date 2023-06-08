@@ -36,14 +36,14 @@ export const dividendsSchema = z.object({
 export const rentalPropertySchema = z.object({
   address: z.string(),
   postcode: z.string(),
-  cost: z.number(),
+  cost: z.coerce.number(),
   dateOfPurchase: z.string(),
   firstDateOfRent: z.string(),
   yearBuilt: z.string(),
-  percentageOwned: z.number(),
+  percentageOwned: z.coerce.number(),
   isRegisteredForLandTax: z.boolean(),
-  outstandingLoanAmount: z.number(),
-  estimatedMarketValue: z.number()
+  outstandingLoanAmount: z.coerce.number(),
+  estimatedMarketValue: z.coerce.number()
 })
 
 export const incomeSchema = z.object({
