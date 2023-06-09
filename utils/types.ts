@@ -1,3 +1,5 @@
+import {ReactElement} from "react";
+
 export type JustifyOptions = "start"
   | "center"
   | "end"
@@ -20,3 +22,21 @@ export type SpacingOptions = "xxs"
   | "lg"
   | "xl"
   | "xxl"
+
+export type IncomeFormComponentsMap = {
+  salaryWages: ReactElement,
+  allowance: ReactElement,
+  trustDistribution: ReactElement,
+  capitalGain: ReactElement,
+  bankInterest: ReactElement,
+  dividends: ReactElement,
+  rentalProperty: ReactElement,
+}
+
+export type DeductionFormComponentsMap = {
+  motorVehicle: ReactElement
+  workRelatedTravel: ReactElement
+  interestDeduction: ReactElement
+  dividendDeduction: ReactElement
+  otherDeductions: ReactElement
+}
