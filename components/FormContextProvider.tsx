@@ -1,7 +1,18 @@
-import {createContext, ReactElement, useContext, useState} from "react";
+import {createContext, useContext, useState} from "react";
 import useComponentTransition from "@/utils/hooks/useComponentTransition";
 import {z} from "zod";
 import {mainSchema} from "@/utils/formSchema";
+import BankInterest from "@/components/income/BankInterest";
+import Dividends from "@/components/income/Dividends";
+import RentalProperty from "@/components/income/RentalProperty";
+import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
+import WorkRelatedTravel from "@/components/deductions/WorkRelatedTravel";
+import MotorVehicle from "@/components/deductions/MotorVehicle";
+import TableOfContents from "@/components/TableOfContents";
+import Inline from "@/components/layout/Inline";
+import {Button} from "@/components/ui/button";
+import {ChevronLeft, ChevronRight} from "lucide-react";
+import Stack from "@/components/layout/Stack";
 
 const defaultFormState: z.infer<typeof mainSchema> = {
   personalInfo: {
@@ -130,23 +141,44 @@ export function useMainFormContext() {
   }
 }
 
-interface FormContextProviderProps {
-  components: ReactElement[]
+const incomeFormComponentsMap: IncomeFormComponentsMap = {
+  salaryWages: <BankInterest/>,
+  allowance: <BankInterest/>,
+  trustDistribution: <BankInterest/>,
+  capitalGain: <BankInterest/>,
+  bankInterest: <BankInterest/>,
+  dividends: <Dividends/>,
+  rentalProperty: <RentalProperty/>,
 }
 
-export function FormContextProvider({components}: FormContextProviderProps) {
+const deductionFormComponentsMap: DeductionFormComponentsMap = {
+  motorVehicle: <MotorVehicle/>,
+  workRelatedTravel: <WorkRelatedTravel/>,
+  interestDeduction: <WorkRelatedTravel/>,
+  dividendDeduction: <WorkRelatedTravel/>,
+  otherDeductions: <WorkRelatedTravel/>,
+}
+
+export function FormContextProvider() {
   const [formState, setFormState] = useState<MainFormState>(defaultMainFormState);
 
   const formStateUpdateHandler = (stateSetter: (formState: MainFormState) => MainFormState) => {
     setFormState(prev => stateSetter(prev))
   }
 
+  const incomeComponents = formState.forms.income.map(name => incomeFormComponentsMap[name])
+  const deductionComponents = formState.forms.deductions.map(name => deductionFormComponentsMap[name])
+  const components = [...incomeComponents, ...deductionComponents]
+
   const {
     currentElement,
     showPreviousElement,
     showNextElement,
     jumpTo
-  } = useComponentTransition(components)
+  } = useComponentTransition([
+    <TableOfContents key={0}/>,
+    ...components
+  ])
 
   return (
     <FormContext.Provider value={{
@@ -156,7 +188,13 @@ export function FormContextProvider({components}: FormContextProviderProps) {
       showNextElement,
       jumpTo
     }}>
-      {currentElement}
+      <Stack>
+        {currentElement}
+        <Inline>
+          <Button type="button" onClick={showPreviousElement}><ChevronLeft className="h-4 w-4"/></Button>
+          <Button type="button" onClick={showNextElement}><ChevronRight className="h-4 w-4"/></Button>
+        </Inline>
+      </Stack>
     </FormContext.Provider>
   )
 }

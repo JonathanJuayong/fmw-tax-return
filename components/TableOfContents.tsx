@@ -9,8 +9,11 @@ import {Checkbox} from "@/components/ui/checkbox";
 import Inline from "@/components/layout/Inline";
 import {Button} from "@/components/ui/button";
 import {ErrorMessage} from "@hookform/error-message";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
 
-const incomeForms = [
+const incomeForms: Array<{value: keyof IncomeFormComponentsMap, label: string}> = [
   {
     value: "salaryWages",
     label: "Salary and Wages"
@@ -41,7 +44,7 @@ const incomeForms = [
   }
 ]
 
-const deductionForms = [
+const deductionForms: Array<{value: keyof DeductionFormComponentsMap, label: string}> = [
   {
     value: "motorVehicle",
     label: "Motor Vehicle"
@@ -65,15 +68,36 @@ const deductionForms = [
 ]
 
 const tableOfContentsSchema = z.object({
-  forms: z.array(z.string()).nonempty("Must tick at least one category.")
+  forms: z.object({
+    income: z.array(z.string()),
+    deductions: z.array(z.string())
+  })
 })
 
 export default function TableOfContents() {
+  const {formStateSetter, formState} = useMainFormContext()
   const form = useForm<z.infer<typeof tableOfContentsSchema>>({
     resolver: zodResolver(tableOfContentsSchema),
     defaultValues: {
-      forms: []
+      forms: {
+        income: [],
+        deductions: []
+      }
     }
+  })
+
+  useEffect(() => {
+    form.reset(formState)
+  }, [formState])
+
+  const onSubmitHandler = form.handleSubmit(data => {
+    formStateSetter((formState) => ({
+      ...formState,
+      forms: {
+        income: data.forms.income as unknown as (Array<keyof IncomeFormComponentsMap>),
+        deductions: data.forms.deductions as unknown as (Array<keyof DeductionFormComponentsMap>)
+      }
+    }))
   })
 
   return (
@@ -87,7 +111,7 @@ export default function TableOfContents() {
                 <h2>Income:</h2>
                 <FormField
                   control={form.control}
-                  name="forms"
+                  name="forms.income"
                   render={({field}) => (
                     <>{incomeForms.map((item) => (
                       <FormItem
@@ -119,7 +143,7 @@ export default function TableOfContents() {
                 <h2>Deductions:</h2>
                 <FormField
                   control={form.control}
-                  name="forms"
+                  name="forms.deductions"
                   render={({field}) => (
                     <>{deductionForms.map((item) => (
                       <FormItem
@@ -152,7 +176,7 @@ export default function TableOfContents() {
               name="forms"
               errors={form.formState.errors}
             />
-            <Button type="button" onClick={form.handleSubmit(value => console.log(value))}>Submit</Button>
+            <Button type="button" onClick={onSubmitHandler}>Submit</Button>
           </form>
         </Stack>
       </Form>
