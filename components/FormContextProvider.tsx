@@ -84,11 +84,19 @@ const defaultFormState: z.infer<typeof mainSchema> = {
   }
 }
 
-const defaultMainFormState = {
+type DefaultMainFormStateType = {
+  data: typeof defaultFormState,
+  forms: {
+    income: Array<keyof IncomeFormComponentsMap>,
+    deductions: Array<keyof DeductionFormComponentsMap>
+  }
+}
+
+const defaultMainFormState: DefaultMainFormStateType = {
   data: defaultFormState,
   forms: {
-    income: [""],
-    deductions: [""]
+    income: [],
+    deductions: []
   }
 }
 
