@@ -68,6 +68,17 @@ export const motorVehicleSchema = z.object({
   kmTravelled: z.coerce.number()
 })
 
+export const workRelatedTravelSchema = z.object({
+  reasonForClaim: z.string(),
+  taxiExpense: z.coerce.number(),
+  tollExpense: z.coerce.number(),
+  parkingExpense: z.coerce.number(),
+  otherExpenses: z.array(z.object({
+    name: z.string(),
+    amount: z.coerce.number()
+  })),
+})
+
 export const incomeSchema = z.object({
   bankInterest: z.array(bankInterestSchema),
   dividends: z.array(dividendsSchema),
