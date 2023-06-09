@@ -48,6 +48,26 @@ export const rentalPropertySchema = z.object({
   estimatedMarketValue: z.coerce.number()
 })
 
+export const motorVehicleSchema = z.object({
+  make: z.string(),
+  model: z.string(),
+  registrationNumber: z.string(),
+  costOfCar: z.coerce.number(),
+  dateOfPurchase: z.string(),
+  tradeAmount: z.coerce.number(),
+  reasonForClaim: z.string(),
+  withLogbook: z.boolean(),
+  businessUsePercent: z.coerce.number(),
+  fuelExpense: z.coerce.number(),
+  repairAndMaintenanceExpense: z.coerce.number(),
+  registrationExpense: z.coerce.number(),
+  insuranceExpense: z.coerce.number(),
+  leaseExpense: z.coerce.number(),
+  carWashExpense: z.coerce.number(),
+  interestExpense: z.coerce.number(),
+  kmTravelled: z.coerce.number()
+})
+
 export const incomeSchema = z.object({
   bankInterest: z.array(bankInterestSchema),
   dividends: z.array(dividendsSchema),
