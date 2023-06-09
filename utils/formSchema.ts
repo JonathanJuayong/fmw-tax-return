@@ -39,7 +39,9 @@ export const rentalPropertySchema = z.object({
   cost: z.coerce.number(),
   dateOfPurchase: z.string(),
   firstDateOfRent: z.string(),
-  yearBuilt: z.string(),
+  yearBuilt: z.coerce.number()
+    .min(1900, "Year cannot be earlier than 1900")
+    .max(new Date().getFullYear(), "Year cannot be later than current year"),
   percentageOwned: z.coerce.number(),
   isRegisteredForLandTax: z.boolean(),
   outstandingLoanAmount: z.coerce.number(),

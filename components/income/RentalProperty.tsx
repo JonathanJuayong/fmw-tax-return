@@ -25,7 +25,7 @@ const defaultValues: z.infer<typeof schema> = {
       cost: 0,
       dateOfPurchase: "",
       firstDateOfRent: "",
-      yearBuilt: "",
+      yearBuilt: 1900,
       percentageOwned: 0,
       isRegisteredForLandTax: false,
       outstandingLoanAmount: 0,
@@ -56,7 +56,7 @@ export default function RentalProperty() {
     cost: 0,
     dateOfPurchase: "",
     firstDateOfRent: "",
-    yearBuilt: "",
+    yearBuilt: 1900,
     percentageOwned: 0,
     isRegisteredForLandTax: false,
     outstandingLoanAmount: 0,
@@ -102,7 +102,7 @@ export default function RentalProperty() {
                       name={`${name}.${index}.dateOfPurchase`}
                       render={({field}) => (
                         <FormPrimitiveWrapper label="Date of Purchase" description="Date of Purchase">
-                          <Input {...field}/>
+                          <Input type="date" {...field}/>
                         </FormPrimitiveWrapper>
                       )}
                     />
@@ -111,7 +111,7 @@ export default function RentalProperty() {
                       name={`${name}.${index}.firstDateOfRent`}
                       render={({field}) => (
                         <FormPrimitiveWrapper label="Date of First Rent" description="Date of First Rent">
-                          <Input {...field}/>
+                          <Input type="date" {...field}/>
                         </FormPrimitiveWrapper>
                       )}
                     />
