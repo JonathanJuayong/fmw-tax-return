@@ -176,6 +176,57 @@ export function FormContextProvider() {
     ...deductionComponents
   ]
 
+  // revert to original default state if form is not shown. TODO: Find a better way to do this!
+  useEffect(() => {
+    const newIncomeState = Object.keys(defaultFormState.income).reduce((acc, cur) => {
+
+      // if key is not in forms array, revert to default values
+      if (!formState.forms.income.includes(cur as keyof IncomeFormComponentsMap)) {
+        return {
+          ...formState.data.income,
+          ...acc,
+          // figure out how to fix type error
+          // @ts-ignore
+          [cur]: defaultFormState.income[cur] ?? {}
+        }
+      }
+      return {
+        ...formState.data.income,
+        ...acc,
+      }
+    }, {})
+    const newDeductionsState = Object.keys(defaultFormState.deductions).reduce((acc, cur) => {
+      if (!formState.forms.deductions.includes(cur as keyof DeductionFormComponentsMap)) {
+        return {
+          ...formState.data.deductions,
+          ...acc,
+          // figure out how to fix type error
+          // @ts-ignore
+          [cur]: defaultFormState.deductions[cur] ?? {}
+        }
+      }
+      return {
+        ...formState.data.deductions,
+        ...acc,
+      }
+    }, {})
+
+    setFormState(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        income: {
+          ...prev.data.income,
+          ...newIncomeState
+        },
+        deductions: {
+          ...prev.data.deductions,
+          ...newDeductionsState
+        }
+      }
+    }))
+  }, [formState.forms])
+
   const {
     currentElement,
     showPreviousElement,
