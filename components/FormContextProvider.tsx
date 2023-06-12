@@ -93,6 +93,7 @@ const defaultFormState: z.infer<typeof mainSchema> = {
       parkingExpense: 0,
       otherExpenses: []
     },
+    otherDeductions: {}
   }
 }
 
