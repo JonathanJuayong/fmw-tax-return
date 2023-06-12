@@ -1,3 +1,5 @@
+"use client"
+
 import {createContext, useContext, useEffect, useState} from "react";
 import useComponentTransition from "@/utils/hooks/useComponentTransition";
 import {z} from "zod";
