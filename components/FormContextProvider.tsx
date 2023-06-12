@@ -13,6 +13,7 @@ import Inline from "@/components/layout/Inline";
 import {Button} from "@/components/ui/button";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import Stack from "@/components/layout/Stack";
+import PersonalInfoForm from "@/components/PersonalInfoForm";
 
 const defaultFormState: z.infer<typeof mainSchema> = {
   personalInfo: {
@@ -168,7 +169,12 @@ export function FormContextProvider() {
 
   const incomeComponents = formState.forms.income.map(name => incomeFormComponentsMap[name])
   const deductionComponents = formState.forms.deductions.map(name => deductionFormComponentsMap[name])
-  const components = [...incomeComponents, ...deductionComponents]
+  const components = [
+    <PersonalInfoForm key={0}/>,
+    <TableOfContents key={1}/>,
+    ...incomeComponents,
+    ...deductionComponents
+  ]
 
   const {
     currentElement,
@@ -176,7 +182,6 @@ export function FormContextProvider() {
     showNextElement,
     jumpTo
   } = useComponentTransition([
-    <TableOfContents key={0}/>,
     ...components
   ])
 
