@@ -38,7 +38,7 @@ export default function FormNavigation<T>(
       {showPrevious && (
         <Button
           type="button"
-          className="self-start"
+          className="self-start mr-auto"
           onClick={handleShowPrevious}
         >
           <ChevronLeft/>
@@ -47,7 +47,7 @@ export default function FormNavigation<T>(
       {showNext && (
         <Button
           type="button"
-          className="self-end"
+          className="self-end ml-auto"
           onClick={handleShowNext}
         >
           <ChevronRight/>
