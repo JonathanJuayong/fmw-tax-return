@@ -91,15 +91,18 @@ export default function TableOfContents() {
     form.reset(formState)
   }, [formState])
 
-  const onSubmitHandler = form.handleSubmit(data => {
-    formStateSetter((formState) => ({
-      ...formState,
-      forms: {
-        income: data.forms.income as unknown as (Array<keyof IncomeFormComponentsMap>),
-        deductions: data.forms.deductions as unknown as (Array<keyof DeductionFormComponentsMap>)
-      }
-    }))
-  })
+  useEffect(() => {
+    const subscription = form.watch(({forms}) => {
+      formStateSetter(prev => ({
+        ...prev,
+        forms:{
+          income: forms?.income as unknown as (Array<keyof IncomeFormComponentsMap>) ?? [],
+          deductions: forms?.deductions as unknown as (Array<keyof DeductionFormComponentsMap>) ?? []
+        }
+      }))
+    })
+    return () => {subscription.unsubscribe()}
+  }, [formState, form.watch]);
 
   return (
     <>
