@@ -11,6 +11,7 @@ import {Button} from "@/components/ui/button";
 import {ErrorMessage} from "@hookform/error-message";
 import {useMainFormContext} from "@/components/FormContextProvider";
 import {useEffect} from "react";
+import {Card, CardContent} from "@/components/ui/card";
 import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
 
 const incomeForms: Array<{value: keyof IncomeFormComponentsMap, label: string}> = [
@@ -106,72 +107,76 @@ export default function TableOfContents() {
       <Form {...form}>
         <Stack gap="md" asChild>
           <form>
-            <Stack className="sm:flex-row sm:justify-around sm:gap-10">
-              <Stack>
-                <h2>Income:</h2>
-                <FormField
-                  control={form.control}
-                  name="forms.income"
-                  render={({field}) => (
-                    <>{incomeForms.map((item) => (
-                      <FormItem
-                        key={item.value}
-                      >
-                        <Inline justifyContent="start">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.value)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.value])
-                                  : field.onChange(
-                                    field.value?.filter(
-                                      (v) => v !== item.value
-                                    )
-                                  )
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel>{item.label}</FormLabel>
-                        </Inline>
-                      </FormItem>
-                    ))}</>
-                  )}
-                />
+            <Card>
+              <Stack asChild alignItems="center" gap="md" className="sm:flex-row sm:justify-evenly sm:items-start sm:gap-10 p-6">
+                <CardContent>
+                  <Stack>
+                    <h2>Income:</h2>
+                    <FormField
+                      control={form.control}
+                      name="forms.income"
+                      render={({field}) => (
+                        <>{incomeForms.map((item) => (
+                          <FormItem
+                            key={item.value}
+                          >
+                            <Inline justifyContent="start">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.value)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, item.value])
+                                      : field.onChange(
+                                        field.value?.filter(
+                                          (v) => v !== item.value
+                                        )
+                                      )
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel>{item.label}</FormLabel>
+                            </Inline>
+                          </FormItem>
+                        ))}</>
+                      )}
+                    />
+                  </Stack>
+                  <Stack>
+                    <h2>Deductions:</h2>
+                    <FormField
+                      control={form.control}
+                      name="forms.deductions"
+                      render={({field}) => (
+                        <>{deductionForms.map((item) => (
+                          <FormItem
+                            key={item.value}
+                          >
+                            <Inline justifyContent="start">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.value)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, item.value])
+                                      : field.onChange(
+                                        field.value?.filter(
+                                          (v) => v !== item.value
+                                        )
+                                      )
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel>{item.label}</FormLabel>
+                            </Inline>
+                          </FormItem>
+                        ))}</>
+                      )}
+                    />
+                  </Stack>
+                </CardContent>
               </Stack>
-              <Stack>
-                <h2>Deductions:</h2>
-                <FormField
-                  control={form.control}
-                  name="forms.deductions"
-                  render={({field}) => (
-                    <>{deductionForms.map((item) => (
-                      <FormItem
-                        key={item.value}
-                      >
-                        <Inline justifyContent="start">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.value)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.value])
-                                  : field.onChange(
-                                    field.value?.filter(
-                                      (v) => v !== item.value
-                                    )
-                                  )
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel>{item.label}</FormLabel>
-                        </Inline>
-                      </FormItem>
-                    ))}</>
-                  )}
-                />
-              </Stack>
-            </Stack>
+            </Card>
             <ErrorMessage
               name="forms"
               errors={form.formState.errors}
