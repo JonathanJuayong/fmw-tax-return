@@ -7,14 +7,14 @@ import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Checkbox} from "@/components/ui/checkbox";
 import Inline from "@/components/layout/Inline";
-import {Button} from "@/components/ui/button";
 import {ErrorMessage} from "@hookform/error-message";
 import {useMainFormContext} from "@/components/FormContextProvider";
 import {useEffect} from "react";
 import {Card, CardContent} from "@/components/ui/card";
 import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
+import FormNavigation from "@/components/FormNavigation";
 
-const incomeForms: Array<{value: keyof IncomeFormComponentsMap, label: string}> = [
+const incomeForms: Array<{ value: keyof IncomeFormComponentsMap, label: string }> = [
   {
     value: "salaryWages",
     label: "Salary and Wages"
@@ -45,7 +45,7 @@ const incomeForms: Array<{value: keyof IncomeFormComponentsMap, label: string}> 
   }
 ]
 
-const deductionForms: Array<{value: keyof DeductionFormComponentsMap, label: string}> = [
+const deductionForms: Array<{ value: keyof DeductionFormComponentsMap, label: string }> = [
   {
     value: "motorVehicle",
     label: "Motor Vehicle"
@@ -95,13 +95,15 @@ export default function TableOfContents() {
     const subscription = form.watch(({forms}) => {
       formStateSetter(prev => ({
         ...prev,
-        forms:{
+        forms: {
           income: forms?.income as unknown as (Array<keyof IncomeFormComponentsMap>) ?? [],
           deductions: forms?.deductions as unknown as (Array<keyof DeductionFormComponentsMap>) ?? []
         }
       }))
     })
-    return () => {subscription.unsubscribe()}
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [formState, form.watch]);
 
   return (
@@ -111,7 +113,8 @@ export default function TableOfContents() {
         <Stack gap="md" asChild>
           <form>
             <Card>
-              <Stack asChild alignItems="center" gap="md" className="sm:flex-row sm:justify-evenly sm:items-start sm:gap-10 p-6">
+              <Stack asChild alignItems="center" gap="md"
+                     className="sm:flex-row sm:justify-evenly sm:items-start sm:gap-10 p-6">
                 <CardContent>
                   <Stack>
                     <h2>Income:</h2>
@@ -184,7 +187,7 @@ export default function TableOfContents() {
               name="forms"
               errors={form.formState.errors}
             />
-            <Button type="button" onClick={onSubmitHandler}>Submit</Button>
+            <FormNavigation/>
           </form>
         </Stack>
       </Form>

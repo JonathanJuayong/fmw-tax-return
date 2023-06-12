@@ -10,6 +10,9 @@ import Column from "@/components/layout/Column";
 import {Button} from "@/components/ui/button";
 import {PlusCircle, X} from "lucide-react";
 import {dividendsSchema} from "@/utils/formSchema";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import FormNavigation from "@/components/FormNavigation";
 
 const schema = z.object({
   dividends: z.array(dividendsSchema)
@@ -29,6 +32,7 @@ const defaultValues: z.infer<typeof schema> = {
 }
 
 export default function Dividends() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "all",
@@ -41,6 +45,23 @@ export default function Dividends() {
     control: form.control,
     name
   })
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        income: {
+          ...prev.data.income,
+          dividends: data.dividends
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset({dividends: formState.data.income.dividends})
+  }, [formState])
 
   const handleDeleteItem = (index: number) => () => remove(index)
 
@@ -146,7 +167,7 @@ export default function Dividends() {
           >
             <PlusCircle/>
           </Button>
-          <Button type="button" onClick={form.handleSubmit(data => console.log(data))}>Submit</Button>
+          <FormNavigation onNavigationClickHandler={handleFormSubmit}/>
         </form>
       </Stack>
     </Form>

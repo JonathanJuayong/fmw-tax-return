@@ -9,8 +9,10 @@ import {personalInfoSchema} from "@/utils/formSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Combobox from "@/components/ui/combobox";
 import Stack from "@/components/layout/Stack";
-import {Button} from "@/components/ui/button";
 import Column from "@/components/layout/Column";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import FormNavigation from "@/components/FormNavigation";
 
 const defaultValues: z.infer<typeof personalInfoSchema> = {
   title: "",
@@ -37,11 +39,28 @@ const titleOptions = [
 ]
 
 export default function PersonalInfoForm() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof personalInfoSchema>>({
     resolver: zodResolver(personalInfoSchema),
     mode: "all",
     defaultValues
   })
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        personalInfo: {
+          ...data,
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset(formState.data.personalInfo)
+  }, [formState])
 
   return (
     <Form {...form}>
@@ -193,12 +212,10 @@ export default function PersonalInfoForm() {
               />
             </Column>
           </Stack>
-          <Button
-            type="button"
-            onClick={form.handleSubmit(data => console.log(data))}
-          >
-            Submit
-          </Button>
+          <FormNavigation
+            onNavigationClickHandler={handleFormSubmit}
+            showPrevious={false}
+          />
         </form>
       </Stack>
     </Form>

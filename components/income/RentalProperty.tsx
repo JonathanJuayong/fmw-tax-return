@@ -12,6 +12,9 @@ import Inline from "@/components/layout/Inline";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {PlusCircle, X} from "lucide-react";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import FormNavigation from "@/components/FormNavigation";
+import {useEffect} from "react";
 
 const schema = z.object({
   rentalProperty: z.array(rentalPropertySchema)
@@ -35,6 +38,7 @@ const defaultValues: z.infer<typeof schema> = {
 }
 
 export default function RentalProperty() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "all",
@@ -62,6 +66,23 @@ export default function RentalProperty() {
     outstandingLoanAmount: 0,
     estimatedMarketValue: 0
   })
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        income: {
+          ...prev.data.income,
+          rentalProperty: data.rentalProperty
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset({rentalProperty: formState.data.income.rentalProperty})
+  }, [formState])
 
   return (
     <Form {...form}>
@@ -199,7 +220,7 @@ export default function RentalProperty() {
           >
             <PlusCircle/>
           </Button>
-          <Button type="button" onClick={form.handleSubmit(data => console.log(data))}>Submit</Button>
+          <FormNavigation onNavigationClickHandler={handleFormSubmit}/>
         </form>
       </Stack>
     </Form>

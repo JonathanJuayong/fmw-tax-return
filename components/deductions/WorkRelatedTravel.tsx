@@ -10,6 +10,9 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import Inline from "@/components/layout/Inline";
 import {Button} from "@/components/ui/button";
 import {PlusCircle, X} from "lucide-react";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import FormNavigation from "@/components/FormNavigation";
 
 const schema = z.object({
   workRelatedTravel: workRelatedTravelSchema
@@ -26,6 +29,7 @@ const defaultValues: z.infer<typeof schema> = {
 }
 
 export default function WorkRelatedTravel() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "all",
@@ -45,6 +49,23 @@ export default function WorkRelatedTravel() {
     name: "",
     amount: 0
   })
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        deductions: {
+          ...prev.data.deductions,
+          workRelatedTravel: data.workRelatedTravel
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset({workRelatedTravel: formState.data.deductions.workRelatedTravel})
+  }, [formState])
 
   return (
     <Form {...form}>
@@ -138,7 +159,7 @@ export default function WorkRelatedTravel() {
               </CardContent>
             </Stack>
           </Card>
-          <Button type="button" onClick={form.handleSubmit(data => console.log(data))}>Submit</Button>
+          <FormNavigation onNavigationClickHandler={handleFormSubmit}/>
         </form>
       </Stack>
     </Form>

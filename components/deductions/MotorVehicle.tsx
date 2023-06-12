@@ -10,7 +10,9 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import Column from "@/components/layout/Column";
 import Inline from "@/components/layout/Inline";
 import {Checkbox} from "@/components/ui/checkbox";
-import {Button} from "@/components/ui/button";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import FormNavigation from "@/components/FormNavigation";
 
 const schema = z.object({
   motorVehicle: motorVehicleSchema
@@ -39,6 +41,7 @@ const defaultValues: z.infer<typeof schema> = {
 }
 
 export default function MotorVehicle() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "all",
@@ -46,6 +49,23 @@ export default function MotorVehicle() {
   })
 
   const name = "motorVehicle" as const
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        deductions: {
+          ...prev.data.deductions,
+          motorVehicle: data.motorVehicle
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset({motorVehicle: formState.data.deductions.motorVehicle})
+  }, [formState])
 
   return (
     <Form {...form}>
@@ -239,7 +259,7 @@ export default function MotorVehicle() {
               </CardContent>
             </Stack>
           </Card>
-          <Button type="button" onClick={form.handleSubmit(data => console.log(data))}>Submit</Button>
+          <FormNavigation onNavigationClickHandler={handleFormSubmit}/>
         </form>
       </Stack>
     </Form>

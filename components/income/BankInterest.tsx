@@ -12,6 +12,9 @@ import Inline from "@/components/layout/Inline";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {PlusCircle, X} from "lucide-react";
+import {useMainFormContext} from "@/components/FormContextProvider";
+import {useEffect} from "react";
+import FormNavigation from "@/components/FormNavigation";
 
 const schema = z.object({
   bankInterests: z.array(bankInterestSchema)
@@ -30,6 +33,7 @@ const defaultValues: z.infer<typeof schema> = {
 }
 
 export default function BankInterest() {
+  const {formState, formStateSetter} = useMainFormContext()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "all",
@@ -52,6 +56,23 @@ export default function BankInterest() {
     accountNumber: "",
     isJointAccount: false
   })
+
+  const handleFormSubmit = form.handleSubmit(data => {
+    formStateSetter(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        income: {
+          ...prev.data.income,
+          bankInterest: data.bankInterests
+        }
+      }
+    }))
+  })
+
+  useEffect(() => {
+    form.reset({bankInterests: formState.data.income.bankInterest})
+  }, [formState])
 
   return (
     <Form {...form}>
@@ -149,7 +170,7 @@ export default function BankInterest() {
           >
             <PlusCircle/>
           </Button>
-          <Button type="button" onClick={form.handleSubmit(data => console.log(data))}>Submit</Button>
+          <FormNavigation onNavigationClickHandler={handleFormSubmit}/>
         </form>
       </Stack>
     </Form>
