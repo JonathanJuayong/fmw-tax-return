@@ -246,10 +246,6 @@ export function FormContextProvider() {
     }}>
       <Stack>
         {currentElement}
-        <Inline>
-          <Button type="button" onClick={showPreviousElement}><ChevronLeft className="h-4 w-4"/></Button>
-          <Button type="button" onClick={showNextElement}><ChevronRight className="h-4 w-4"/></Button>
-        </Inline>
       </Stack>
     </FormContext.Provider>
   )
