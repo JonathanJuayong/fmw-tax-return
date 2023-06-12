@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import useComponentTransition from "@/utils/hooks/useComponentTransition";
 import {z} from "zod";
 import {mainSchema} from "@/utils/formSchema";
@@ -9,11 +9,9 @@ import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types
 import WorkRelatedTravel from "@/components/deductions/WorkRelatedTravel";
 import MotorVehicle from "@/components/deductions/MotorVehicle";
 import TableOfContents from "@/components/TableOfContents";
-import Inline from "@/components/layout/Inline";
-import {Button} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight} from "lucide-react";
 import Stack from "@/components/layout/Stack";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
+import PlaceholderFormComponent from "@/components/PlaceholderFormComponent";
 
 const defaultFormState: z.infer<typeof mainSchema> = {
   personalInfo: {
@@ -144,10 +142,10 @@ export function useMainFormContext() {
 }
 
 const incomeFormComponentsMap: IncomeFormComponentsMap = {
-  salaryWages: <BankInterest/>,
-  allowance: <BankInterest/>,
-  trustDistribution: <BankInterest/>,
-  capitalGain: <BankInterest/>,
+  salaryWages: <PlaceholderFormComponent name="Salary and Wages"/>,
+  allowance: <PlaceholderFormComponent name="Allowance"/>,
+  trustDistribution: <PlaceholderFormComponent name="Trust Distribution"/>,
+  capitalGain: <PlaceholderFormComponent name="Capital Gains"/>,
   bankInterest: <BankInterest/>,
   dividends: <Dividends/>,
   rentalProperty: <RentalProperty/>,
@@ -156,9 +154,9 @@ const incomeFormComponentsMap: IncomeFormComponentsMap = {
 const deductionFormComponentsMap: DeductionFormComponentsMap = {
   motorVehicle: <MotorVehicle/>,
   workRelatedTravel: <WorkRelatedTravel/>,
-  interestDeduction: <WorkRelatedTravel/>,
-  dividendDeduction: <WorkRelatedTravel/>,
-  otherDeductions: <WorkRelatedTravel/>,
+  interestDeduction: <PlaceholderFormComponent name="Interest Deduction"/>,
+  dividendDeduction: <PlaceholderFormComponent name="Dividend Deduction"/>,
+  otherDeductions: <PlaceholderFormComponent name="Other Deductions"/>,
 }
 
 export function FormContextProvider() {
