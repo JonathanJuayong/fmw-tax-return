@@ -86,8 +86,8 @@ export const incomeSchema = z.object({
 })
 
 export const deductionsSchema = z.object({
-  motorVehicle: z.object({}),
-  workRelatedTravel: z.object({}),
+  motorVehicle: motorVehicleSchema,
+  workRelatedTravel: workRelatedTravelSchema,
   otherDeductions: z.object({}),
 })
 
