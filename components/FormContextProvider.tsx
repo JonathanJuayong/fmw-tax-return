@@ -14,6 +14,7 @@ import TableOfContents from "@/components/TableOfContents";
 import Stack from "@/components/layout/Stack";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
 import PlaceholderFormComponent from "@/components/PlaceholderFormComponent";
+import FormSummary from "@/components/FormSummary";
 
 const defaultFormState: z.infer<typeof mainSchema> = {
   personalInfo: {
@@ -174,7 +175,8 @@ export function FormContextProvider() {
     <PersonalInfoForm key={0}/>,
     <TableOfContents key={1}/>,
     ...incomeComponents,
-    ...deductionComponents
+    ...deductionComponents,
+    <FormSummary key="summary"/>
   ]
 
   // revert to original default state if form is not shown. TODO: Find a better way to do this!
