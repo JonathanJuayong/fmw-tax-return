@@ -245,7 +245,7 @@ export default function MotorVehicle() {
                     />
                   </>
                 )}
-                {!form.getValues(`${name}.withLogbook`) && (
+                {!form.watch(`${name}.withLogbook`).valueOf() && (
                   <FormField
                     control={form.control}
                     name={`${name}.kmTravelled`}
