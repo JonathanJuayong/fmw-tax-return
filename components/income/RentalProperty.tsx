@@ -176,7 +176,7 @@ export default function RentalProperty() {
                     )}
                   />
                   {/*TODO: Should unset values if checkbox is unticked*/}
-                  {form.getValues(`${name}.${index}.isRegisteredForLandTax`) && (
+                  {form.watch(`${name}.${index}.isRegisteredForLandTax`).valueOf() && (
                     <>
                       <FormField
                         control={form.control}
