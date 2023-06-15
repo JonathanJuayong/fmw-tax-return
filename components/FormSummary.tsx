@@ -2,10 +2,12 @@ import {useMainFormContext} from "@/components/FormContextProvider";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import Stack from "@/components/layout/Stack";
 import {Button} from "@/components/ui/button";
-import {Edit} from "lucide-react";
+import {Download, Edit} from "lucide-react";
 import {ReactNode} from "react";
 import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
 import Inline from "@/components/layout/Inline";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import PDFSummary from "@/components/PDFSummary";
 
 function FormSectionHeader({label}: { label: string }) {
   return <h4 className="text-xs font-bold text-stone-400">{label}</h4>
@@ -69,6 +71,8 @@ const getIndex = <T, >(
 }
 
 const INCOME_INDEX_OFFSET = 2
+
+const currentDate = new Date().toLocaleDateString()
 
 export default function FormSummary() {
   const {formState, jumpTo} = useMainFormContext()
@@ -209,6 +213,19 @@ export default function FormSummary() {
           </Stack>
         </SummaryCard>
       )}
+      <PDFDownloadLink
+        document={<PDFSummary data={formState.data}/>}
+        fileName={`fmw-tax-return-form-${currentDate}`}
+      >
+        {({loading}) => (
+          <Button className="w-full" disabled={loading} type="button">
+            <Inline className="gap-2">
+              <Download/>
+              {loading ? "Creating PDF..." : "Download PDF"}
+            </Inline>
+          </Button>
+        )}
+      </PDFDownloadLink>
     </Stack>
   )
 }
