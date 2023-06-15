@@ -58,11 +58,11 @@ export default function Inline<T extends HTMLDivElement>(
     <Component
       {...props}
       className={cn(
-        props.className,
         "flex",
         justify,
         align,
-        gutter
+        gutter,
+        props.className
       )}
     >
       {children}
