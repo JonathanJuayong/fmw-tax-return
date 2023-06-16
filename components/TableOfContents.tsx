@@ -13,6 +13,7 @@ import {useEffect} from "react";
 import {Card, CardContent} from "@/components/ui/card";
 import {DeductionFormComponentsMap, IncomeFormComponentsMap} from "@/utils/types";
 import FormNavigation from "@/components/FormNavigation";
+import {cn} from "@/lib/utils";
 
 const incomeForms: Array<{ value: keyof IncomeFormComponentsMap, label: string }> = [
   {
@@ -67,6 +68,8 @@ const deductionForms: Array<{ value: keyof DeductionFormComponentsMap, label: st
     label: "Other Deductions"
   }
 ]
+
+const highlighted: Array<keyof IncomeFormComponentsMap | keyof DeductionFormComponentsMap> = ["bankInterest", "dividends", "rentalProperty", "motorVehicle", "workRelatedTravel"]
 
 const tableOfContentsSchema = z.object({
   forms: z.object({
@@ -141,7 +144,13 @@ export default function TableOfContents() {
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel>{item.label}</FormLabel>
+                              <FormLabel
+                                className={cn(
+                                  highlighted.includes(item.value) ? "font-bold" : "font-light"
+                                )}
+                              >
+                                {item.label}
+                              </FormLabel>
                             </Inline>
                           </FormItem>
                         ))}</>
@@ -173,7 +182,13 @@ export default function TableOfContents() {
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel>{item.label}</FormLabel>
+                              <FormLabel
+                                className={cn(
+                                  highlighted.includes(item.value) ? "font-bold" : "font-light"
+                                )}
+                              >
+                                {item.label}
+                              </FormLabel>
                             </Inline>
                           </FormItem>
                         ))}</>
